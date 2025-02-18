@@ -1,35 +1,30 @@
 using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class BreedService : MonoBehaviour
-{  
+public class BreedService
+{
     private const string ApiUrl = "https://dogapi.dog/api/v2/breeds";
-    public List<BreedData> Breeds { get; private set; } = new();  
+    public BreedData[] Breeds { get; private set; } 
+    public bool IsLoadedData { get; private set; }
 
-    async void Start()
-    {
-        Breeds = await FetchBreedsAsync(); 
-    }
-
-    async Task<List<BreedData>> FetchBreedsAsync()
+    public async UniTask FetchBreedsAsync()
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(ApiUrl))
         {
             await webRequest.SendWebRequest();  
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || 
+                webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError($"Error: {webRequest.error}");
-                return null;
-            }
-
+                Debug.LogError($"Error: {webRequest.error}"); 
+            } 
+           
             var responseJson = webRequest.downloadHandler.text;
-            var response = JsonUtility.FromJson<ApiResponse>(responseJson);
-
-            return response.data;
+            var apiResponse = JsonUtility.FromJson<ApiResponse>(responseJson);
+            
+            Breeds = apiResponse.data; 
+            IsLoadedData = true;  
         }
     } 
 
@@ -40,7 +35,7 @@ public class BreedService : MonoBehaviour
             if (breed.id == id) return breed;
         }
         return null;
-    } 
+    }   
 }
 
 [System.Serializable]
@@ -60,5 +55,5 @@ public class BreedAttributes
 [System.Serializable]
 public class ApiResponse
 {
-    public List<BreedData> data; 
+    public BreedData[] data; 
 }

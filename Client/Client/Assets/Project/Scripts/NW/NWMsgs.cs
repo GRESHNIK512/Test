@@ -1,38 +1,40 @@
 using Mirror;
-using System.Collections.Generic;
 
-//on Client
-public struct ButtonClickMessage : NetworkMessage
+public struct ButtonClickMessage : NetworkMessage, INetworkSender
 {
-    public int ID;
+    public int Id; 
+    public void Send() { NetworkClient.Send(this); }
 }
 
-public struct ButtonClickFactMessage : NetworkMessage
+public struct ButtonClickFactMessage : NetworkMessage, INetworkSender
 {
-    public string ID;
+    public int UnqIdMsg;
+    public string Id; 
+    public void Send() { NetworkClient.Send(this); } 
 }
 
-public struct WeatherMessage : NetworkMessage
+public struct WeatherMessage : NetworkMessage 
 {
     public string IconUrl;
     public string When;
-    public string Temperature;
+    public string Temperature;  
 }
 
-public struct BreedDataMessage : NetworkMessage
-{
-    public List<BreedData> BreedDataList;
+public struct BreedDataMessage : NetworkMessage 
+{ 
+    public BreedData[] BreedsData; 
 }
 
 public struct BreedDescriptionMessage : NetworkMessage
 {
-    public BreedData BreedData;
-} 
+    public int UnqIdMsg;
+    public BreedData BreedData; 
+}
 
 [System.Serializable]
 public class BreedData
 {
-    public string id; 
+    public string id;
     public BreedAttributes attributes;
 }
 
@@ -40,5 +42,12 @@ public class BreedData
 public class BreedAttributes
 {
     public string name;
-    public string description; 
+    public string description;
 }
+
+public interface INetworkSender
+{
+    void Send(); 
+}
+
+ 

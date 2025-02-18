@@ -9,7 +9,7 @@ using Zenject;
 
 public class WeatherContent : Content
 {
-    [SerializeField] private Image _image;
+    [SerializeField] private Image _weatherImg;
     [SerializeField] private TextMeshProUGUI _whenTMP;
     [SerializeField] private TextMeshProUGUI _temperatureTMP;
     
@@ -30,10 +30,10 @@ public class WeatherContent : Content
             if (_temperatureTMP != null) _temperatureTMP.text = Msg.Temperature;
             else Debug.LogError("_temperatureTMP is not assigned.");
 
-            if (_image != null && iconSprite != null) _image.sprite = iconSprite;
+            if (_weatherImg != null && iconSprite != null) _weatherImg.sprite = iconSprite;
             else Debug.LogError("_iconImage is not assigned or iconSprite is null.");
 
-            _image.color = Color.white;
+            _weatherImg.color = Color.white;
             _windowgame.ShowMyContent(0);
         }
         catch (Exception ex)

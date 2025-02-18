@@ -1,13 +1,13 @@
 using Mirror;
-using System.Threading.Tasks;
+using System.Linq;
 using UnityEngine;
-using Zenject;
+
 
 public class MsgService : MonoBehaviour
 {
-    [Inject] BreedService _breedService;
-    [Inject] WeatherService _weatherService;
-
+    private BreedService _breedService = new ();
+    private WeatherService _weatherService = new (); 
+   
     #region RegisterMsg
     public void RegistersMsg()
     {
@@ -18,23 +18,22 @@ public class MsgService : MonoBehaviour
 
     private void OnReceiveButtonClickMessage(NetworkConnectionToClient conn, ButtonClickMessage message)
     {
-        Debug.Log("Msg RecivedFromClient ButtonClick " + message.ID);
-        switch (message.ID)
+        Debug.Log("Msg RecivedFromClient ButtonClick " + message.Id);
+        switch (message.Id)
         {
-            case 0: SendWeatherToClientByConn(conn); break; //pogode
+            case 0: SendWeatherToClientByConn(conn); break; //pogoda
             case 1: SendBreedsToClientByConn(conn);  break; //fact
             default: Debug.LogError("No valid ID ButtonClickMsg"); break;
         }
     }
 
-    private async void OnReceiveButtonFactClickMessage(NetworkConnectionToClient conn, ButtonClickFactMessage message)
+    private void OnReceiveButtonFactClickMessage(NetworkConnectionToClient conn, ButtonClickFactMessage message)
     {
-        Debug.Log("Msg RecivedFromClient ButtonClickFact " + message.ID);
-        await Task.Delay(Random.Range(250, 500));
-        var data = _breedService.GetBreedByID(message.ID);
+        Debug.Log("Msg RecivedFromClient ButtonClickFact " + message.Id);  
         var msg = new BreedDescriptionMessage()
         {
-            BreedData = data
+            BreedData = _breedService.GetBreedByID(message.Id),
+            UnqIdMsg = message.UnqIdMsg 
         };
 
         NetworkServer.SendToConn(msg, conn);
@@ -44,7 +43,8 @@ public class MsgService : MonoBehaviour
 
     private async void SendWeatherToClientByConn(NetworkConnectionToClient conn)
     {
-        await Task.Delay(Random.Range(250, 500));
+        Debug.Log("Msg SendWeatherToClientByConn ");
+        if (!_weatherService.IsLoadedData) await _weatherService.FetchWeatherData();
         var period = _weatherService.GetData(); 
         var msg = new WeatherMessage()
         {
@@ -57,15 +57,13 @@ public class MsgService : MonoBehaviour
 
     private async void SendBreedsToClientByConn(NetworkConnectionToClient conn)
     {
-        await Task.Delay(Random.Range(250, 500));
+        if (!_breedService.IsLoadedData) await _breedService.FetchBreedsAsync();
         var msg = new BreedDataMessage()
-        {
-            BreedDataList = _breedService.Breeds
+        { 
+            BreedsData = _breedService.Breeds
         };
-       
+        //Debug.Log($"{msg.BreedsData.Length}");
         NetworkServer.SendToConn(msg, conn);
-    }
-
-    #endregion
-
+    } 
+    #endregion 
 }

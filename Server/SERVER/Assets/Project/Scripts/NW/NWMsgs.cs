@@ -1,14 +1,14 @@
 using Mirror;
-using System.Collections.Generic;
 
 public struct ButtonClickMessage : NetworkMessage
 {
-    public int ID;
+    public int Id;
 }
 
-public struct ButtonClickFactMessage : NetworkMessage
+public struct ButtonClickFactMessage : NetworkMessage 
 {
-    public string ID;
+    public int UnqIdMsg;
+    public string Id; 
 }
 
 public struct WeatherMessage : NetworkMessage 
@@ -20,10 +20,11 @@ public struct WeatherMessage : NetworkMessage
 
 public struct BreedDataMessage : NetworkMessage
 {
-    public List<BreedData> BreedDataList;
+    public BreedData[] BreedsData;
 }
 
 public struct BreedDescriptionMessage : NetworkMessage
 {
-    public BreedData BreedData;
-}
+    public int UnqIdMsg;
+    public BreedData BreedData; 
+} 

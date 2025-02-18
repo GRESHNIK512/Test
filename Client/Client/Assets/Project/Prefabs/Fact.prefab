@@ -262,9 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _infoTMP: {fileID: 4677146067202310377}
-  _loadImage: {fileID: 3108279313865902144}
-  duration: 3
-  rotationAmount: {x: 0, y: 0, z: -360}
+  _loadImg: {fileID: 3108279313865902144}
 --- !u!222 &8448488076380956823
 CanvasRenderer:
   m_ObjectHideFlags: 0

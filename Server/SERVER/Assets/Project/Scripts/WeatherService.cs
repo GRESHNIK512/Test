@@ -3,41 +3,40 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class WeatherService : MonoBehaviour
+public class WeatherService 
 {
-    int partNumber = 0; 
-
+    private int _periodNumber = 0; 
     private WeatherData _weatherData;
+    public bool IsLoadedData { get; private set; }
 
-    private string apiUrl = "https://api.weather.gov/gridpoints/TOP/31,80/forecast";
+    private string ApiUrl = "https://api.weather.gov/gridpoints/TOP/31,80/forecast";  
 
-    private async void Start()
+    public async UniTask FetchWeatherData()
     {
-        await FetchWeatherData();
-    }
-
-    private async UniTask FetchWeatherData()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(apiUrl))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(ApiUrl))
         {
             await webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || 
+                webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("Error: " + webRequest.error);
             }
+
             else
-            {
+            { 
                 string jsonResponse = webRequest.downloadHandler.text;
                 _weatherData = JsonUtility.FromJson<WeatherData>(jsonResponse);
+                
+                IsLoadedData = true; 
             }
         }
     }  
 
     public Period GetData() 
     {  
-        if (partNumber >= _weatherData.properties.periods.Count()) partNumber = 0; 
-        return _weatherData.properties.periods[partNumber++];
+        if (_periodNumber >= _weatherData.properties.periods.Count()) _periodNumber = 0; 
+        return _weatherData.properties.periods[_periodNumber++];
     }  
 }
 

@@ -3,19 +3,17 @@ using Zenject;
 
 public class WeatherButton : SwitchButton
 {
-    [Inject] WindowGame _windowgame;
-    [Inject] MsgService _msgService;
+    [Inject] WindowGame _windowgame; 
 
-    public override void Start()
-    {
-        base.Start();
+    void Start() 
+    {  
         Id = 0;  // Погода
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
         base.OnPointerClick(eventData);
-        _windowgame.UIButtonUpdateChoose(Id);
-        _msgService.SendToClientButtonClickMsg(Id);
+        if (!_isChooseen) _windowgame.UIButtonUpdateChoose(Id);
+        _isChooseen = true;
     }
 } 

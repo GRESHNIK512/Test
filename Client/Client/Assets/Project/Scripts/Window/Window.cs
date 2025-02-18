@@ -1,20 +1,14 @@
-using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class Window : MonoBehaviour
 {
-    private Canvas _canvas;
-    private GraphicRaycaster _rayCaster;
-
-    private void Start()
-    {
-        _canvas = GetComponent<Canvas>();
-        _rayCaster = GetComponent<GraphicRaycaster>();
-    }
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private GraphicRaycaster _graphicRayCaster; 
+   
     public void Show(bool value)
     {
-        _canvas.enabled = value;
-        _rayCaster.enabled = value;
+        if (_canvas) _canvas.enabled = value;
+        if (_graphicRayCaster) _graphicRayCaster.enabled = value;
     }
 }

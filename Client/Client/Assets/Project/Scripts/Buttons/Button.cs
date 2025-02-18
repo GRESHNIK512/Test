@@ -5,21 +5,11 @@ using UnityEngine.UI;
 public abstract class Button : MonoBehaviour, IPointerClickHandler
 {  
     public int Id { get; protected set; }
-    protected Image _image;
-
-
-    public virtual void Start() 
-    {
-        _image = GetComponent<Image>();
-    }
+    [SerializeField] protected Image _image;   
 
     public virtual void OnPointerClick(PointerEventData eventData)
-    { 
-         
-    }
+    { }
 
-    public virtual void UpdateButtonColor(bool active) 
-    {
-    
-    }
+    public virtual void UpdateButtonState(bool active) 
+    { }
 } 

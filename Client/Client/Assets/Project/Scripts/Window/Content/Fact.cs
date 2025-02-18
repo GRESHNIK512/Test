@@ -9,34 +9,42 @@ public class Fact : MonoBehaviour, IPointerClickHandler
 {
     [Inject] MsgService _msgService;
     [Inject] GameSettings _gameSettings;
+    [Inject] FactsContent _factsContent;
 
     [SerializeField] private TextMeshProUGUI _infoTMP;
-    [SerializeField] private Image _loadImage;  
+    [SerializeField] private Image _loadImg;
     public string Id { get; set; }
 
+    private bool _choosen; 
+   
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (_choosen) return;
+
         _msgService.SendToClientFactButtonClickMsg(Id);
         StartRotate();
+        _choosen = true;
+        _factsContent.ResetAllFactIgnoreMe(this);
     }
 
-    public void SetInfo(string value) 
+    public void SetInfo(string value)
     {
         _infoTMP.text = value;
     }
 
     private void StartRotate()
-    {
-        _loadImage.enabled = true;
-        // Используем DOTween для вращения объекта
-        _loadImage.transform.DORotate(_gameSettings.rotationAmount, _gameSettings.duration, RotateMode.FastBeyond360)
-                 .SetEase(Ease.Linear) // Линейное движение (постоянная скорость)
-                 .SetLoops(-1, LoopType.Restart); // Бесконечное повторение
+    { 
+        _loadImg.enabled = true;
+        
+        _loadImg.transform.DORotate(_gameSettings.rotationAmount, _gameSettings.duration, RotateMode.FastBeyond360)
+                 .SetEase(Ease.Linear) 
+                 .SetLoops(-1, LoopType.Restart); 
     }
 
-    public void StopRotate() 
+    public void StopRotate()
     {
-        _loadImage.enabled = false;
-        DOTween.Pause(_loadImage.transform);
-    }
+        _choosen = false;
+        _loadImg.enabled = false;
+        DOTween.Pause(_loadImg.transform);
+    } 
 }

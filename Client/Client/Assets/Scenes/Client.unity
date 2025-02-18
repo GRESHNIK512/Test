@@ -180,7 +180,7 @@ MonoBehaviour:
   - {fileID: 2142355900}
   - {fileID: 700598979}
   - {fileID: 132094469}
-  _image: {fileID: 789629019}
+  _weatherImg: {fileID: 789629019}
   _whenTMP: {fileID: 2142355902}
   _temperatureTMP: {fileID: 700598981}
 --- !u!222 &51618276
@@ -354,6 +354,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1512992ecfc85294dad2e9cc3ef0ca68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _windows:
+  - {fileID: 311199869}
+  - {fileID: 1756317288}
 --- !u!1 &132094469
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.34901962, g: 0.84313726, b: 0.9607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -619,12 +622,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 766608cbb390a2d4b850d188a4914c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button:
+  _canvas: {fileID: 311199871}
+  _graphicRayCaster: {fileID: 311199870}
+  _buttons:
   - {fileID: 921169595}
   - {fileID: 1542654242}
   _weatherContent: {fileID: 51618275}
   _factsContent: {fileID: 1564105502}
-  _loadImage: {fileID: 2058241266}
+  _loadImg: {fileID: 2058241266}
 --- !u!114 &311199870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1069,6 +1074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa35c6d5940d5a647ab8f04ce2f8cda4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _image: {fileID: 628420591}
 --- !u!1 &657230574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,7 +1527,7 @@ GameObject:
   - component: {fileID: 789629020}
   - component: {fileID: 789629019}
   m_Layer: 5
-  m_Name: Weather_Icon
+  m_Name: Weather(IMG)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1932,9 +1938,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 921169592}
+  - component: {fileID: 921169595}
   - component: {fileID: 921169594}
   - component: {fileID: 921169593}
-  - component: {fileID: 921169595}
   m_Layer: 5
   m_Name: Button_Weather
   m_TagString: Untagged
@@ -2012,6 +2018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49251a1c679cdd24bab393b2d986dd46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _image: {fileID: 921169593}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2895,6 +2902,7 @@ MonoBehaviour:
   _windowService: {fileID: 106116017}
   _windowDescription: {fileID: 1756317288}
   _windowGame: {fileID: 311199869}
+  _factsContent: {fileID: 1564105502}
   _msgService: {fileID: 574233747}
   _gameSettings: {fileID: 11400000, guid: 33c9e8da582b35f46bc0bbd10f72b12e, type: 2}
 --- !u!1 &1542654238
@@ -2986,6 +2994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b8149f03e77f64dbe9514a95e03a3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _image: {fileID: 1542654240}
 --- !u!1 &1564105500
 GameObject:
   m_ObjectHideFlags: 0
@@ -3108,7 +3117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3420,6 +3429,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafc7452df81a8846b11d7d6124b2dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvas: {fileID: 1756317290}
+  _graphicRayCaster: {fileID: 1756317289}
   _title: {fileID: 1278548760}
   _description: {fileID: 657230576}
 --- !u!114 &1756317289
@@ -3858,7 +3869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.8784314, g: 0.29411766, b: 0.40784314, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

@@ -1,11 +1,20 @@
 using Mirror;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class MsgService : MonoBehaviour
 {
     [Inject] WindowDescription _windowDescription;
-    [Inject] WindowGame _windowgame; 
+    [Inject] WindowGame _windowgame;
+
+    private Queue<(INetworkSender sender, Type _expectedMessageType)> _messageQueue = new();
+    private bool _isProcessing = false;
+
+    private Coroutine _repeatCoroutine;
+    private int _msgUniqueId = 0;   
 
     #region RegisterMsg
     public void RegistersMsg()
@@ -16,34 +25,131 @@ public class MsgService : MonoBehaviour
     }
     #endregion 
 
-    //Отправка 
+    private void TrySendNextMessage()
+    {
+        if (!_isProcessing && _messageQueue.Count > 0)
+        {
+            _isProcessing = true;
+            Debug.Log($"Отправка сообщения на Сервер");
+            _messageQueue.Peek().sender.Send();  
+        }
+    }
+
+    private void CheckQueue(Type tryAddType)
+    {
+        if (_messageQueue.Count > 0 && _isProcessing && (_messageQueue.Peek()._expectedMessageType != tryAddType ||
+            _messageQueue.Peek()._expectedMessageType == tryAddType && tryAddType == typeof(BreedDescriptionMessage)))
+        { 
+            _messageQueue.Clear();
+            _isProcessing = false;
+        }
+    }
+
+    //Отправка
     public void SendToClientButtonClickMsg(int id) 
     {
-        Debug.Log("Отправка на Сервер клик по Меню");
-        NetworkClient.Send(new ButtonClickMessage() { ID = id });
+        Debug.Log($"Добавили в очередь клик по Кнопке id = {id} | MsgCount= {_messageQueue.Count + 1}");
+        var type = id == 0 ? typeof(WeatherMessage) : typeof(BreedDataMessage);
+        
+        CheckQueue(type);
+        _messageQueue.Enqueue((new ButtonClickMessage() { Id = id }, type));
+        TrySendNextMessage(); 
     }
 
     public void SendToClientFactButtonClickMsg(string id)
     {
-        Debug.Log("Отправка на Сервер клик по Fact");
-        NetworkClient.Send(new ButtonClickFactMessage() { ID = id });
+        Debug.Log($"Добавили в очередь клик по Fact id = {id}| MsgCount = {_messageQueue.Count + 1}");
+        var type = typeof(BreedDescriptionMessage);
+      
+        CheckQueue(type);
+        _messageQueue.Enqueue((new ButtonClickFactMessage() { Id = id , UnqIdMsg = GetUnqIdForMessage()}, type));
+        TrySendNextMessage(); 
     }
 
     //Обработка
     public void OnReceiveWeatherMessage(WeatherMessage message)
     {
-        _windowgame.HandleMessage(message); 
+        Debug.Log("Сообщение с сервера Погода");
+        HandleMessage(message, msg => _windowgame.HandleMessage(msg));
     }
 
     public void OnReceiveBreedDataMessage(BreedDataMessage message)
     {
         Debug.Log("Сообщение с сервера общий список фактов");
-        _windowgame.HandleMessage(message);
-        
+        HandleMessage(message, msg => _windowgame.HandleMessage(msg));
     }
+
     public void OnReceiveBreedDescriptionMessage(BreedDescriptionMessage message)
     {
         Debug.Log("Сообщение с сервера факт + подробности");
-        _windowDescription.RefreshInfo(message);
+        HandleMessage(message, msg => _windowDescription.RefreshInfo(msg), message.UnqIdMsg);
+    }
+    
+    private void HandleMessage<T>(T message, Action<T> specificHandler, int unqID = -1)
+    { 
+
+        if (!IsExpectedMessageType<T>())
+        {
+            Debug.LogWarning("Сообщение игнорируется: не совпадает с ожидаемым типом.");
+            return;
+        }
+
+        if (unqID != -1)
+        {
+            if (_messageQueue.Peek().sender is ButtonClickFactMessage factMessage)
+            {
+                if (factMessage.UnqIdMsg != unqID)
+                {
+                    Debug.LogWarning("Сообщение игнорируется: не совпадает UniqIdMsg.");
+                    return;
+                }
+            }
+        }
+
+        ProcessNextMessage();
+        specificHandler(message);
+    }
+
+    private void ProcessNextMessage()
+    {
+        _messageQueue.Dequeue();
+        _isProcessing = false;
+        TrySendNextMessage();
     } 
-} 
+    
+    public void CheckRepeatButton(int id) 
+    {
+        SendToClientButtonClickMsg(id);
+        
+        if (id == 0) 
+        { 
+            _repeatCoroutine = StartCoroutine(RepeatSendMessage(id));
+        }
+        else if (_repeatCoroutine != null)
+        {
+            StopCoroutine(_repeatCoroutine);
+            _repeatCoroutine = null;
+           
+        }
+    }
+
+    private IEnumerator RepeatSendMessage(int id) 
+    {
+        while (true)
+        {  
+            yield return new WaitForSeconds(1f); 
+            SendToClientButtonClickMsg(id);  
+        }
+    }
+
+    private int GetUnqIdForMessage() 
+    {
+        if (_msgUniqueId >= int.MaxValue - 1) _msgUniqueId = 0; 
+        return _msgUniqueId++;
+    }
+
+    private bool IsExpectedMessageType<T>()
+    {
+        return _messageQueue.Count > 0 && _messageQueue.Peek()._expectedMessageType == typeof(T);
+    }  
+}  

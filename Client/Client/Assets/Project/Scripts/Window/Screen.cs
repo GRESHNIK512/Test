@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class Screen : MonoBehaviour
 {  
-    private List<Window> _windows = new();  
+    [SerializeField] private List<Window> _windows;  
 
     private void Start()
     {
-        DOTween.Init();
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            var Tr = transform.GetChild(i); 
-            if (Tr.TryGetComponent(out Window window))
-                _windows.Add(window);
-        } 
+        DOTween.Init();  
     }
 
     public void ShowOnlyMe(Window targetWindow) 
