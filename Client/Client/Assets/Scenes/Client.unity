@@ -175,10 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 494671f797776224782c2ddf122236e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Objects:
-  - {fileID: 789629017}
-  - {fileID: 2142355900}
-  - {fileID: 700598979}
+  _objects:
   - {fileID: 132094469}
   _weatherImg: {fileID: 789629019}
   _whenTMP: {fileID: 2142355902}
@@ -3045,8 +3042,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43f63a7208c0a3b40a84b484eaed32fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Objects:
-  - {fileID: 2139186186}
+  _objects:
+  - {fileID: 980618462}
   _facts:
   - {fileID: 1665844820}
   - {fileID: 1333584347}

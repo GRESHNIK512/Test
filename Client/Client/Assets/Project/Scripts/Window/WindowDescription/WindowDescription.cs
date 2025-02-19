@@ -1,4 +1,3 @@
-using Mirror;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -12,8 +11,8 @@ public class WindowDescription : Window
 
     public void RefreshInfo(BreedDescriptionMessage msg)
     { 
-        _title.text = msg.BreedData.attributes.name;
-        _description.text = msg.BreedData.attributes.description;
+        _title.text = msg.BreedData.Attributes.Name;
+        _description.text = msg.BreedData.Attributes.Description;
         _windowService.ShowOnlyMe(this);
     } 
 }

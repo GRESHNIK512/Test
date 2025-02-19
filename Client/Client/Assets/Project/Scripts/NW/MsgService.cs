@@ -14,7 +14,7 @@ public class MsgService : MonoBehaviour
     private bool _isProcessing = false;
 
     private Coroutine _repeatCoroutine;
-    private int _msgUniqueId = 0;   
+    private int _msgUniqueId = 0;
 
     #region RegisterMsg
     public void RegistersMsg()
@@ -31,7 +31,7 @@ public class MsgService : MonoBehaviour
         {
             _isProcessing = true;
             Debug.Log($"Отправка сообщения на Сервер");
-            _messageQueue.Peek().sender.Send();  
+            _messageQueue.Peek().sender.Send();
         }
     }
 
@@ -39,34 +39,32 @@ public class MsgService : MonoBehaviour
     {
         if (_messageQueue.Count > 0 && _isProcessing && (_messageQueue.Peek()._expectedMessageType != tryAddType ||
             _messageQueue.Peek()._expectedMessageType == tryAddType && tryAddType == typeof(BreedDescriptionMessage)))
-        { 
+        {
             _messageQueue.Clear();
             _isProcessing = false;
         }
-    }
-
-    //Отправка
-    public void SendToClientButtonClickMsg(int id) 
+    } 
+    
+    public void SendToClientButtonClickMsg(int id)
     {
         Debug.Log($"Добавили в очередь клик по Кнопке id = {id} | MsgCount= {_messageQueue.Count + 1}");
         var type = id == 0 ? typeof(WeatherMessage) : typeof(BreedDataMessage);
-        
+
         CheckQueue(type);
         _messageQueue.Enqueue((new ButtonClickMessage() { Id = id }, type));
-        TrySendNextMessage(); 
+        TrySendNextMessage();
     }
 
     public void SendToClientFactButtonClickMsg(string id)
     {
         Debug.Log($"Добавили в очередь клик по Fact id = {id}| MsgCount = {_messageQueue.Count + 1}");
         var type = typeof(BreedDescriptionMessage);
-      
-        CheckQueue(type);
-        _messageQueue.Enqueue((new ButtonClickFactMessage() { Id = id , UnqIdMsg = GetUnqIdForMessage()}, type));
-        TrySendNextMessage(); 
-    }
 
-    //Обработка
+        CheckQueue(type);
+        _messageQueue.Enqueue((new ButtonClickFactMessage() { Id = id, UnqIdMsg = GetUnqIdForMessage() }, type));
+        TrySendNextMessage();
+    } 
+    
     public void OnReceiveWeatherMessage(WeatherMessage message)
     {
         Debug.Log("Сообщение с сервера Погода");
@@ -84,9 +82,9 @@ public class MsgService : MonoBehaviour
         Debug.Log("Сообщение с сервера факт + подробности");
         HandleMessage(message, msg => _windowDescription.RefreshInfo(msg), message.UnqIdMsg);
     }
-    
+
     private void HandleMessage<T>(T message, Action<T> specificHandler, int unqID = -1)
-    { 
+    {
 
         if (!IsExpectedMessageType<T>())
         {
@@ -115,41 +113,41 @@ public class MsgService : MonoBehaviour
         _messageQueue.Dequeue();
         _isProcessing = false;
         TrySendNextMessage();
-    } 
-    
-    public void CheckRepeatButton(int id) 
+    }
+
+    public void CheckRepeatButton(int id)
     {
         SendToClientButtonClickMsg(id);
-        
-        if (id == 0) 
-        { 
+
+        if (id == 0)
+        {
             _repeatCoroutine = StartCoroutine(RepeatSendMessage(id));
         }
         else if (_repeatCoroutine != null)
         {
             StopCoroutine(_repeatCoroutine);
             _repeatCoroutine = null;
-           
+
         }
     }
 
-    private IEnumerator RepeatSendMessage(int id) 
+    private IEnumerator RepeatSendMessage(int id)
     {
         while (true)
-        {  
-            yield return new WaitForSeconds(1f); 
-            SendToClientButtonClickMsg(id);  
+        {
+            yield return new WaitForSeconds(1f);
+            SendToClientButtonClickMsg(id);
         }
     }
 
-    private int GetUnqIdForMessage() 
+    private int GetUnqIdForMessage()
     {
-        if (_msgUniqueId >= int.MaxValue - 1) _msgUniqueId = 0; 
+        if (_msgUniqueId >= int.MaxValue - 1) _msgUniqueId = 0;
         return _msgUniqueId++;
     }
 
     private bool IsExpectedMessageType<T>()
     {
         return _messageQueue.Count > 0 && _messageQueue.Peek()._expectedMessageType == typeof(T);
-    }  
-}  
+    }
+}

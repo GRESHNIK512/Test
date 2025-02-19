@@ -37,7 +37,7 @@ public class WindowGame : Window
     {
         _loadImg.enabled = true;
       
-        _loadImg.transform.DORotate(_gameSettings.rotationAmount, _gameSettings.duration, RotateMode.FastBeyond360)
+        _loadImg.transform.DORotate(_gameSettings.RotationAmount, _gameSettings.Duration, RotateMode.FastBeyond360)
                  .SetEase(Ease.Linear) 
                  .SetLoops(-1, LoopType.Restart); 
     }

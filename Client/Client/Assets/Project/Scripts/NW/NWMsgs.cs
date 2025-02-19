@@ -2,52 +2,52 @@ using Mirror;
 
 public struct ButtonClickMessage : NetworkMessage, INetworkSender
 {
-    public int Id; 
+    public int Id;
     public void Send() { NetworkClient.Send(this); }
 }
 
 public struct ButtonClickFactMessage : NetworkMessage, INetworkSender
 {
     public int UnqIdMsg;
-    public string Id; 
-    public void Send() { NetworkClient.Send(this); } 
+
+    public string Id;
+    public void Send() { NetworkClient.Send(this); }
 }
 
-public struct WeatherMessage : NetworkMessage 
+public struct WeatherMessage : NetworkMessage
 {
-    public string IconUrl;
+    public byte[] ByteSprite;
     public string When;
-    public string Temperature;  
+    public string Temperature;
 }
 
-public struct BreedDataMessage : NetworkMessage 
-{ 
-    public BreedData[] BreedsData; 
+public struct BreedDataMessage : NetworkMessage
+{
+    public BreedData[] BreedsData;
 }
 
 public struct BreedDescriptionMessage : NetworkMessage
 {
     public int UnqIdMsg;
-    public BreedData BreedData; 
+    public BreedData BreedData;
 }
 
 [System.Serializable]
 public class BreedData
 {
-    public string id;
-    public BreedAttributes attributes;
+    public string Id;
+    public BreedAttributes Attributes;
 }
 
 [System.Serializable]
 public class BreedAttributes
 {
-    public string name;
-    public string description;
+    public string Name;
+    public string Description;
 }
 
 public interface INetworkSender
 {
-    void Send(); 
+    void Send();
 }
 
- 

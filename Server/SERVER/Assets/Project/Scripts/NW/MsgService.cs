@@ -29,7 +29,7 @@ public class MsgService : MonoBehaviour
 
     private void OnReceiveButtonFactClickMessage(NetworkConnectionToClient conn, ButtonClickFactMessage message)
     {
-        Debug.Log("Msg RecivedFromClient ButtonClickFact " + message.Id);  
+        Debug.Log("Msg RecivedFromClient ButtonClickFact" + message.Id);  
         var msg = new BreedDescriptionMessage()
         {
             BreedData = _breedService.GetBreedByID(message.Id),
@@ -43,12 +43,12 @@ public class MsgService : MonoBehaviour
 
     private async void SendWeatherToClientByConn(NetworkConnectionToClient conn)
     {
-        Debug.Log("Msg SendWeatherToClientByConn ");
+        Debug.Log("Msg SendWeatherToClientByConn");
         if (!_weatherService.IsLoadedData) await _weatherService.FetchWeatherData();
         var period = _weatherService.GetData(); 
         var msg = new WeatherMessage()
-        {
-              IconUrl = period.icon,
+        { 
+              ByteSprite = period.sprite.texture.EncodeToJPG(),
               When = period.name,
               Temperature = $"{period.temperature}{period.temperatureUnit}"
         };  

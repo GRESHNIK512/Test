@@ -13,9 +13,9 @@ public class Fact : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private TextMeshProUGUI _infoTMP;
     [SerializeField] private Image _loadImg;
-    public string Id { get; set; }
+    private bool _choosen;
 
-    private bool _choosen; 
+    public string Id { get; set; }  
    
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -35,10 +35,10 @@ public class Fact : MonoBehaviour, IPointerClickHandler
     private void StartRotate()
     { 
         _loadImg.enabled = true;
-        
-        _loadImg.transform.DORotate(_gameSettings.rotationAmount, _gameSettings.duration, RotateMode.FastBeyond360)
-                 .SetEase(Ease.Linear) 
-                 .SetLoops(-1, LoopType.Restart); 
+        _loadImg.transform.DORotate(
+            _gameSettings.RotationAmount, 
+            _gameSettings.Duration, 
+            RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart); 
     }
 
     public void StopRotate()

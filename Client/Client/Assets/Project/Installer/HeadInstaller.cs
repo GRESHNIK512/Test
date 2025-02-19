@@ -15,6 +15,7 @@ public class HeadInstaller : MonoInstaller
 
     //Sobj
     [SerializeField] private GameSettings _gameSettings;
+
     public override void InstallBindings()
     {
         Container.Bind<Screen>().FromInstance(_windowService).AsSingle().NonLazy();

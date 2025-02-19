@@ -13,7 +13,7 @@ public struct ButtonClickFactMessage : NetworkMessage
 
 public struct WeatherMessage : NetworkMessage 
 {
-    public string IconUrl; 
+    public byte[] ByteSprite; 
     public string When;
     public string Temperature;
 }

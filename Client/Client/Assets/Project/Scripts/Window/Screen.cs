@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Screen : MonoBehaviour
-{  
-    [SerializeField] private List<Window> _windows;  
+{
+    [SerializeField] private List<Window> _windows;
 
     private void Start()
     {
-        DOTween.Init();  
+        DOTween.Init();
     }
 
-    public void ShowOnlyMe(Window targetWindow) 
+    public void ShowOnlyMe(Window targetWindow)
     {
-        foreach (var window in _windows) 
+        foreach (var window in _windows)
         {
             window.Show(window.Equals(targetWindow));
         }
     }
-} 
+}
