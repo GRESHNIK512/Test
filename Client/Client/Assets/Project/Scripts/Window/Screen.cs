@@ -1,15 +1,9 @@
-using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Screen : MonoBehaviour
 {
-    [SerializeField] private List<Window> _windows;
-
-    private void Start()
-    {
-        DOTween.Init();
-    }
+    [SerializeField] private List<Window> _windows;  
 
     public void ShowOnlyMe(Window targetWindow)
     {

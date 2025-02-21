@@ -3,7 +3,13 @@ using Zenject;
 
 public class FactsButton : SwitchButton
 {
-    [Inject] WindowGame _windowgame;
+    private WindowGame _windowGame;
+
+    [Inject]
+    public void Construct(WindowGame windowGame)
+    {
+        _windowGame = windowGame;
+    }
 
     void Start()
     {
@@ -14,9 +20,9 @@ public class FactsButton : SwitchButton
     {
         base.OnPointerClick(eventData);
 
-        if (!_isChooseen)
+        if (!_isChooseen) 
         {
-            _windowgame.UIButtonUpdateChoose(Id);
+            _windowGame.UIButtonUpdateChoose(Id);
         }
 
         _isChooseen = true;

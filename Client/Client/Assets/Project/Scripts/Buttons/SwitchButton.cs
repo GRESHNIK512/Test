@@ -3,9 +3,14 @@ using Zenject;
 
 public class SwitchButton : Button
 {
-    [Inject] GameSettings _gameSettings;
+    private GameSettings _gameSettings;
+    protected bool _isChooseen;  
 
-    protected bool _isChooseen;
+    [Inject]
+    public void Construct(GameSettings gameSettings)
+    {
+        _gameSettings = gameSettings;
+    }
 
     void Start()
     {

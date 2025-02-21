@@ -1,9 +1,11 @@
 using Mirror;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Content : MonoBehaviour
 {
-    [SerializeField] private GameObject[] _objects;
+    [SerializeField] private Canvas[] _allCanvas;
+    [SerializeField] private GraphicRaycaster[] _graphicRayCasters;
 
     private void Start()
     {
@@ -12,11 +14,16 @@ public abstract class Content : MonoBehaviour
 
     public abstract void Refresh(NetworkMessage msg);
 
-    public void Show(bool visible)
+    public void Show(bool show)
     {
-        foreach (var item in _objects)
+        foreach (var canvas in _allCanvas)
         {
-            item.SetActive(visible);
+            if (canvas) canvas.enabled = show;
+        }
+
+        foreach (var rayCaster in _graphicRayCasters)
+        {
+            if (rayCaster) rayCaster.enabled = show;
         }
     }
 }

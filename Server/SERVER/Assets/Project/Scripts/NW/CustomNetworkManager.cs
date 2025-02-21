@@ -1,5 +1,5 @@
 using System;
-using Mirror;
+using Mirror; 
 using Zenject;
 
 /*
@@ -9,10 +9,16 @@ using Zenject;
 
 public class CustomNetworkManager : NetworkManager
 {
-    [Inject] MsgService _msgService;
+    private MsgService _msgService;
     // Overrides the base singleton so we don't
     // have to cast to this type everywhere.
     public static new CustomNetworkManager singleton => (CustomNetworkManager)NetworkManager.singleton;
+
+    [Inject]
+    public void Construct(MsgService msgService) 
+    {
+        _msgService = msgService;
+    }
 
     /// <summary>
     /// Runs on both Server and Client

@@ -6,14 +6,22 @@ using Zenject;
 
 public class WindowGame : Window
 {
-    [Inject] GameSettings _gameSettings;
-    [Inject] MsgService _msgService;
+    private GameSettings _gameSettings;
+    private MsgService _msgService;
 
-    [SerializeField] Button[] _buttons;
-    [SerializeField] WeatherContent _weatherContent;
-    [SerializeField] FactsContent _factsContent;
+    [SerializeField] private Button[] _buttons;
+    [SerializeField] private WeatherContent _weatherContent;
+    [SerializeField] private FactsContent _factsContent;
 
-    [SerializeField] Image _loadImg; 
+    [SerializeField] private Image _loadImg;
+    private Tween _rotationTween;
+
+    [Inject]
+    public void Construct(GameSettings gameSettings, MsgService msgService)
+    {
+        _gameSettings = gameSettings;
+        _msgService = msgService;
+    }
 
     public void HandleMessage(NetworkMessage msg)
     {
@@ -36,16 +44,26 @@ public class WindowGame : Window
     private void StartRotate()
     {
         _loadImg.enabled = true;
-      
-        _loadImg.transform.DORotate(_gameSettings.RotationAmount, _gameSettings.Duration, RotateMode.FastBeyond360)
-                 .SetEase(Ease.Linear) 
-                 .SetLoops(-1, LoopType.Restart); 
+
+        if (_rotationTween == null)
+        {
+            _rotationTween = _loadImg.transform.DORotate(
+                _gameSettings.RotationAmount,
+                _gameSettings.Duration,
+                RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart).Pause();
+        }
+
+        _rotationTween.Play();
     }
 
     public void StopRotate()
     {
         _loadImg.enabled = false;
-        DOTween.Pause(_loadImg.transform);
+       
+        if (_rotationTween != null && _rotationTween.IsPlaying())
+        {
+            _rotationTween.Pause();
+        }
     }
 
     public void UIButtonUpdateChoose(int targetButtonId)

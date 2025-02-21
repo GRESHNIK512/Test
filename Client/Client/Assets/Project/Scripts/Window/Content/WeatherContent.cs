@@ -1,16 +1,23 @@
 using Mirror;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Device;
 using UnityEngine.UI;
 using Zenject;
 
 public class WeatherContent : Content
 {
-    [Inject] WindowGame _windowgame;
+    private WindowGame _windowGame;
 
     [SerializeField] private Image _weatherImg;
     [SerializeField] private TextMeshProUGUI _whenTMP;
     [SerializeField] private TextMeshProUGUI _temperatureTMP;  
+
+    [Inject]
+    public void Construct(WindowGame windowGame, Screen screen)
+    {
+        _windowGame = windowGame; 
+    }
 
     public override void Refresh(NetworkMessage msg)
     {
@@ -26,7 +33,7 @@ public class WeatherContent : Content
         else Debug.LogError("_iconImage is not assigned or iconSprite is null.");
 
         _weatherImg.color = Color.white;
-        _windowgame.ShowMyContent(0); 
+        _windowGame.ShowMyContent(0); 
     }
 
     private Sprite BytesToSprite(byte[] bytes)

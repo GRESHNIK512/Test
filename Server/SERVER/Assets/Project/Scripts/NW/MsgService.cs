@@ -1,5 +1,5 @@
 using Mirror;
-using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -27,9 +27,10 @@ public class MsgService : MonoBehaviour
         }
     }
 
-    private void OnReceiveButtonFactClickMessage(NetworkConnectionToClient conn, ButtonClickFactMessage message)
+    private async void OnReceiveButtonFactClickMessage(NetworkConnectionToClient conn, ButtonClickFactMessage message)
     {
-        Debug.Log("Msg RecivedFromClient ButtonClickFact" + message.Id);  
+        Debug.Log("Msg RecivedFromClient ButtonClickFact" + message.Id);
+        await Task.Delay(1000);
         var msg = new BreedDescriptionMessage()
         {
             BreedData = _breedService.GetBreedByID(message.Id),
@@ -45,6 +46,7 @@ public class MsgService : MonoBehaviour
     {
         Debug.Log("Msg SendWeatherToClientByConn");
         if (!_weatherService.IsLoadedData) await _weatherService.FetchWeatherData();
+        await Task.Delay(500);
         var period = _weatherService.GetData(); 
         var msg = new WeatherMessage()
         { 
@@ -58,11 +60,12 @@ public class MsgService : MonoBehaviour
     private async void SendBreedsToClientByConn(NetworkConnectionToClient conn)
     {
         if (!_breedService.IsLoadedData) await _breedService.FetchBreedsAsync();
+        await Task.Delay(1000);
         var msg = new BreedDataMessage()
         { 
             BreedsData = _breedService.Breeds
         };
-        //Debug.Log($"{msg.BreedsData.Length}");
+        
         NetworkServer.SendToConn(msg, conn);
     } 
     #endregion 

@@ -5,9 +5,17 @@ using Zenject;
 
 public class FactsContent : Content
 {
-    [Inject] WindowGame _windowgame;
+    private WindowGame _windowGame;
+    private MsgService _msgService;
 
     [SerializeField] private List<Fact> _facts;
+
+    [Inject]
+    public void Construct(WindowGame windowGame, MsgService msgService)
+    {
+        _windowGame = windowGame;
+        _msgService = msgService;
+    }
 
     public override void Refresh(NetworkMessage msg)
     {
@@ -21,7 +29,7 @@ public class FactsContent : Content
                 _facts[i].Id = Msg.BreedsData[i].Id;
             }
         }
-        _windowgame.ShowMyContent(1);
+        _windowGame.ShowMyContent(1);
     }
 
     public void StopAnim()
@@ -39,5 +47,10 @@ public class FactsContent : Content
             if (fact.Equals(ignoreFact)) continue;
             fact.StopRotate();
         }
+    }
+
+    public void OnFactChosen(string factId)
+    {
+        _msgService.SendToClientFactButtonClickMsg(factId);
     }
 }

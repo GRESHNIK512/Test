@@ -7,14 +7,21 @@ using Zenject;
 
 public class MsgService : MonoBehaviour
 {
-    [Inject] WindowDescription _windowDescription;
-    [Inject] WindowGame _windowgame;
+    private WindowDescription _windowDescription;
+    private WindowGame _windowGame;  
 
-    private Queue<(INetworkSender sender, Type _expectedMessageType)> _messageQueue = new();
+    private Queue<(INetworkSender sender, Type expectedMessageType)> _messageQueue = new();
     private bool _isProcessing = false;
 
     private Coroutine _repeatCoroutine;
     private int _msgUniqueId = 0;
+
+    [Inject]
+    public void Construct(WindowGame windowGame, WindowDescription windowDescription)
+    {
+        _windowGame = windowGame;
+        _windowDescription = windowDescription;
+    }
 
     #region RegisterMsg
     public void RegistersMsg()
@@ -37,8 +44,8 @@ public class MsgService : MonoBehaviour
 
     private void CheckQueue(Type tryAddType)
     {
-        if (_messageQueue.Count > 0 && _isProcessing && (_messageQueue.Peek()._expectedMessageType != tryAddType ||
-            _messageQueue.Peek()._expectedMessageType == tryAddType && tryAddType == typeof(BreedDescriptionMessage)))
+        if (_messageQueue.Count > 0 && _isProcessing && (_messageQueue.Peek().expectedMessageType != tryAddType ||
+            _messageQueue.Peek().expectedMessageType == tryAddType && tryAddType == typeof(BreedDescriptionMessage)))
         {
             _messageQueue.Clear();
             _isProcessing = false;
@@ -68,13 +75,13 @@ public class MsgService : MonoBehaviour
     public void OnReceiveWeatherMessage(WeatherMessage message)
     {
         Debug.Log("Сообщение с сервера Погода");
-        HandleMessage(message, msg => _windowgame.HandleMessage(msg));
+        HandleMessage(message, msg => _windowGame.HandleMessage(msg));
     }
 
     public void OnReceiveBreedDataMessage(BreedDataMessage message)
     {
         Debug.Log("Сообщение с сервера общий список фактов");
-        HandleMessage(message, msg => _windowgame.HandleMessage(msg));
+        HandleMessage(message, msg => _windowGame.HandleMessage(msg));
     }
 
     public void OnReceiveBreedDescriptionMessage(BreedDescriptionMessage message)
@@ -135,7 +142,7 @@ public class MsgService : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(5f);
             SendToClientButtonClickMsg(id);
         }
     }
@@ -148,6 +155,6 @@ public class MsgService : MonoBehaviour
 
     private bool IsExpectedMessageType<T>()
     {
-        return _messageQueue.Count > 0 && _messageQueue.Peek()._expectedMessageType == typeof(T);
+        return _messageQueue.Count > 0 && _messageQueue.Peek().expectedMessageType == typeof(T);
     }
 }

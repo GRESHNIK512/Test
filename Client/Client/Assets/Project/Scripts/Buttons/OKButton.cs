@@ -3,12 +3,19 @@ using Zenject;
 
 public class OkButton : Button
 {
-    [Inject] Screen _windowService;
-    [Inject] WindowGame _windowgame;
+    private Screen _screen; 
+    private WindowGame _windowGame;
+
+    [Inject]
+    public void Construct(WindowGame windowGame, Screen screen)
+    {
+        _windowGame = windowGame;
+        _screen = screen;
+    }
 
     public override void OnPointerClick(PointerEventData eventData)
-    {
-        _windowService.ShowOnlyMe(_windowgame);
-        _windowgame.StopAllAnimationLoad();
+    { 
+        _windowGame.StopAllAnimationLoad();
+        _screen.ShowOnlyMe(_windowGame);
     }
 }
