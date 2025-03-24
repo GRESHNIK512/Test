@@ -1,7 +1,6 @@
 using Mirror;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Device;
 using UnityEngine.UI;
 using Zenject;
 

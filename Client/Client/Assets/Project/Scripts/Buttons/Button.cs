@@ -1,15 +1,14 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityEngine.EventSystems; 
 
 public abstract class Button : MonoBehaviour, IPointerClickHandler
-{
-    [SerializeField] protected Image _image;
-    public int Id { get; protected set; }
-
+{   
     public virtual void OnPointerClick(PointerEventData eventData)
-    { }
+    { }  
+}
 
-    public virtual void UpdateButtonState(bool active)
-    { }
+public enum SwitchTypeButton
+{
+    Weather,
+    Facts
 }

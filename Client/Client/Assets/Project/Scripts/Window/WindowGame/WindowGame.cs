@@ -9,7 +9,7 @@ public class WindowGame : Window
     private GameSettings _gameSettings;
     private MsgService _msgService;
 
-    [SerializeField] private Button[] _buttons;
+    [SerializeField] private SwitchButton[] _switchButtons;
     [SerializeField] private WeatherContent _weatherContent;
     [SerializeField] private FactsContent _factsContent;
 
@@ -21,6 +21,11 @@ public class WindowGame : Window
     {
         _gameSettings = gameSettings;
         _msgService = msgService;
+       
+        foreach (var button in _switchButtons) 
+        {
+            button.OnClickButtonWithIdEvent += UIButtonUpdateChoose;
+        }
     }
 
     public void HandleMessage(NetworkMessage msg)
@@ -68,10 +73,10 @@ public class WindowGame : Window
 
     public void UIButtonUpdateChoose(int targetButtonId)
     {  
-        _msgService.CheckRepeatButton(targetButtonId);
+        _msgService.UserClickOnButtonWithId(targetButtonId);
         _factsContent.StopAnim();
 
-        foreach (var button in _buttons)
+        foreach (var button in _switchButtons)
         {
             button.UpdateButtonState(button.Id == targetButtonId);
         }

@@ -122,7 +122,7 @@ public class MsgService : MonoBehaviour
         TrySendNextMessage();
     }
 
-    public void CheckRepeatButton(int id)
+    public void UserClickOnButtonWithId(int id)
     {
         SendToClientButtonClickMsg(id);
 
@@ -133,8 +133,7 @@ public class MsgService : MonoBehaviour
         else if (_repeatCoroutine != null)
         {
             StopCoroutine(_repeatCoroutine);
-            _repeatCoroutine = null;
-
+            _repeatCoroutine = null; 
         }
     }
 

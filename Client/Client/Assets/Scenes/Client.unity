@@ -553,9 +553,9 @@ MonoBehaviour:
   _graphicRayCasters:
   - {fileID: 1354233392}
   - {fileID: 980618466}
-  _buttons:
-  - {fileID: 921169595}
+  _switchButtons:
   - {fileID: 1542654242}
+  - {fileID: 921169595}
   _weatherContent: {fileID: 51618275}
   _factsContent: {fileID: 1564105502}
   _loadImg: {fileID: 2058241266}
@@ -961,7 +961,6 @@ GameObject:
   - component: {fileID: 628420593}
   - component: {fileID: 628420592}
   - component: {fileID: 628420591}
-  - component: {fileID: 628420595}
   m_Layer: 5
   m_Name: Button_OK
   m_TagString: Untagged
@@ -1039,30 +1038,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa35c6d5940d5a647ab8f04ce2f8cda4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 628420591}
---- !u!223 &628420595
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628420589}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
 --- !u!1 &657230574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,10 +2046,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 921169591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49251a1c679cdd24bab393b2d986dd46, type: 3}
+  m_Script: {fileID: 11500000, guid: fd3b5290d818aec4e87a0921ac582801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 921169593}
+  _type: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -3344,10 +3320,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1542654238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22b8149f03e77f64dbe9514a95e03a3d, type: 3}
+  m_Script: {fileID: 11500000, guid: fd3b5290d818aec4e87a0921ac582801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 1542654240}
+  _type: 1
 --- !u!1 &1564105500
 GameObject:
   m_ObjectHideFlags: 0
@@ -3791,6 +3768,7 @@ MonoBehaviour:
   - {fileID: 665558563}
   _graphicRayCasters:
   - {fileID: 665558564}
+  _OkButton: {fileID: 628420593}
   _title: {fileID: 1278548760}
   _description: {fileID: 657230576}
 --- !u!1 &1933175447
@@ -4103,7 +4081,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.4, y: 0.22}
   m_AnchorMax: {x: 0.6, y: 0.29}
-  m_AnchoredPosition: {x: -0.0000076293945, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2058241266

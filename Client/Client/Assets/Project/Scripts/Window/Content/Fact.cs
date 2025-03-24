@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
-public class Fact : MonoBehaviour, IPointerClickHandler
+public class Fact : Button
 { 
     private GameSettings _gameSettings;
     private FactsContent _factsContent;
@@ -24,10 +24,12 @@ public class Fact : MonoBehaviour, IPointerClickHandler
         _gameSettings = gameSettings;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData eventData)
     {
-        if (_choosen) return;
-       
+        base.OnPointerClick(eventData);
+
+        if (_choosen) return; 
+        
         _choosen = true;
         _factsContent.OnFactChosen(Id);
         _factsContent.ResetAllFactIgnoreMe(this);
